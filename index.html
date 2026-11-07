@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909">
+  <meta name="description" content="Rest Church Ministries — discover our story, vision, and ways to connect.">
+  <title>Rest Church Ministries</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0"></script>
+  <script defer src="assets/js/config.js"></script>
+  <script defer src="assets/js/client.js"></script>
+  <script defer src="assets/js/site.js"></script>
+</head>
+<body>
+  <div data-site-header></div>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-dot"></span> A PLACE TO CONNECT</p>
+        <h1><span class="hero-title-line">Rest Church</span><em class="hero-title-line">Ministries.</em></h1>
+        <p class="hero-lede" data-content="home_intro">Rest Church is a channel of elevating leaders to function holistically, equipping them to integrate discipleship and mission.</p>
+        <div class="hero-actions">
+          <a class="button button-dark" href="about.html">Discover our story <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="donations.html">Ways to give <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img class="pastor-poster" src="assets/images/pastor.png" alt="Rest Church pastor preaching at a church service" fetchpriority="high">
+        <div class="image-note">PASTOR · REST CHURCH MINISTRIES</div>
+        <button class="hero-play-button" type="button" data-video-trigger aria-label="Play the pastor’s message" aria-haspopup="dialog" aria-controls="pastor-video-dialog">
+          <span class="play-icon" aria-hidden="true"></span>
+          <span class="play-label">PASTOR’S MESSAGE</span>
+        </button>
+        <a class="hero-chip hero-chip-story" href="about.html"><span class="chip-icon" aria-hidden="true">✳</span><span><small>GET TO KNOW US</small><strong>Our story</strong></span><span class="chip-arrow" aria-hidden="true">↗</span></a>
+        <a class="hero-chip hero-chip-give" href="donations.html"><span class="chip-icon" aria-hidden="true">↗</span><span><small>DIRECT GIVING</small><strong>Bank transfer</strong></span><span class="chip-arrow" aria-hidden="true">↗</span></a>
+      </div>
+      <nav class="hero-index-bar" aria-label="Explore Rest Church Ministries">
+        <a href="about.html"><span>01</span> ABOUT US <b aria-hidden="true">↗</b></a>
+        <a href="about.html#vision"><span>02</span> OUR VISION <b aria-hidden="true">↗</b></a>
+        <a href="contact.html"><span>03</span> GET IN TOUCH <b aria-hidden="true">↗</b></a>
+        <a href="donations.html"><span>04</span> WAYS TO GIVE <b aria-hidden="true">↗</b></a>
+      </nav>
+    </section>
+
+    <dialog class="pastor-video-dialog" id="pastor-video-dialog" aria-labelledby="pastor-video-title">
+      <div class="video-dialog-header">
+        <div><p class="eyebrow">REST CHURCH MINISTRIES</p><h2 id="pastor-video-title">Pastor’s message</h2></div>
+        <button class="video-close" type="button" data-video-close aria-label="Close video">×</button>
+      </div>
+      <div class="video-player" data-video-player aria-live="polite">
+        <p class="video-message" data-video-message>The church has not added the pastor’s video yet. Add a church-approved video URL in the admin dashboard to enable playback.</p>
+      </div>
+    </dialog>
+
+    <section class="welcome section-wrap" id="welcome">
+      <div class="section-label"><span>01</span> A PLACE TO BEGIN</div>
+      <div class="welcome-copy">
+        <p class="eyebrow">REST CHURCH MINISTRIES</p>
+        <h2>A little more about<br><em>who we are.</em></h2>
+        <p data-content="about_intro">Rest Church is a channel of elevating leaders to function holistically, equipping them to integrate discipleship and mission.</p>
+        <a class="text-link" href="about.html">Explore about us <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="welcome-aside">
+        <p>Every story begins with a conversation. We’d love to hear from you.</p>
+        <a class="round-link" href="contact.html" aria-label="Contact Rest Church Ministries"><span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section class="purpose-band">
+      <div class="purpose-image">
+        <img src="assets/images/mission-community-team.jpeg" alt="Rest Church members taking part in a community mission" loading="lazy">
+        <span class="image-note">LOCAL & GLOBAL MISSION · REST CHURCH</span>
+      </div>
+      <div class="purpose-copy">
+        <p class="eyebrow">WHAT GUIDES US</p>
+        <h2>Our vision<br>&amp; <em>Our mission.</em></h2>
+        <p>We evangelize, disciple, equip, and send locally and globally.</p>
+        <a class="button button-light" href="about.html#vision">Explore our purpose <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section class="church-gallery section-wrap" aria-labelledby="gallery-title">
+      <div class="connect-top gallery-heading">
+        <div><p class="eyebrow">MINISTRY, FELLOWSHIP & SERVICE</p><h2 id="gallery-title">Together in<br><em>faith & action.</em></h2></div>
+        <a class="text-link" href="about.html#objectives">Our ministry & values <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="church-gallery-grid">
+        <a class="church-photo church-photo-outreach" href="about.html#objectives">
+          <img src="assets/images/mission-boat-outreach.jpeg" alt="Rest Church members traveling together on a mission outreach" loading="lazy">
+          <span class="church-photo-caption"><small>LOCAL & GLOBAL MISSION</small><strong>Going together</strong></span>
+        </a>
+        <a class="church-photo church-photo-care" href="about.html#values">
+          <img src="assets/images/community-care.jpeg" alt="Rest Church members serving families in their community" loading="lazy">
+          <span class="church-photo-caption"><small>HOSPITALITY & CARE</small><strong>Serving our community</strong></span>
+        </a>
+        <a class="church-photo church-photo-baptism" href="about.html#faith">
+          <img src="assets/images/water-baptism.jpeg" alt="A Rest Church member being baptized in water" loading="lazy">
+          <span class="church-photo-caption"><small>WATER BAPTISM</small><strong>A declaration of faith</strong></span>
+        </a>
+        <a class="church-photo church-photo-discipleship" href="about.html#leadership">
+          <img src="assets/images/children-discipleship.jpeg" alt="A church member caring for children during a church gathering" loading="lazy">
+          <span class="church-photo-caption"><small>CHILDREN’S MINISTRY</small><strong>Growing together</strong></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="connect section-wrap">
+      <div class="connect-top">
+        <div>
+          <p class="eyebrow">TAKE THE NEXT STEP</p>
+          <h2>Stay connected<br><em>with us.</em></h2>
+        </div>
+        <p>Questions, a message, or looking for ways to support the church? We’re here to help.</p>
+      </div>
+      <div class="connect-cards">
+        <a class="connect-card" href="contact.html"><span class="card-number">01 / CONNECT</span><span class="card-title">Contact us</span><span class="card-arrow" aria-hidden="true">↗</span></a>
+        <a class="connect-card" href="donations.html"><span class="card-number">02 / GIVE</span><span class="card-title">Make a donation</span><span class="card-arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+  <div data-site-footer></div>
+</body>
+</html>

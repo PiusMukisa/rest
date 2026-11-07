@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909">
+  <meta name="description" content="Contact Rest Church Ministries by email, phone, or message about the church and its land appeal.">
+  <title>Contact Us — Rest Church Ministries</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0"></script>
+  <script defer src="assets/js/config.js"></script>
+  <script defer src="assets/js/client.js"></script>
+  <script defer src="assets/js/site.js"></script>
+  <script defer src="assets/js/contact.js"></script>
+</head>
+<body>
+  <div data-site-header></div>
+  <main>
+    <section class="page-hero">
+      <p class="eyebrow">WE’D LOVE TO HEAR FROM YOU</p>
+      <h1>Get in <em>touch.</em></h1>
+      <p>Email or call Rest Church Ministries, ask about the church land appeal, or send a message for the ministry team.</p>
+    </section>
+    <section class="contact-layout section-wrap">
+      <div class="contact-details">
+        <p class="eyebrow">CONTACT DETAILS</p>
+        <h2>Reach out<br><em>to us.</em></h2>
+        <p class="contact-note">We’d be glad to hear from you. Contact the church with questions about the ministry, giving, or the church land appeal.</p>
+        <dl class="details-list">
+          <div><dt>Email</dt><dd><a class="contact-method-link" href="mailto:restchurh37@gmail.com" data-content="contact_email" data-contact-link="email">restchurh37@gmail.com</a></dd></div>
+        </dl>
+        <section class="contact-phone-list" aria-labelledby="contact-phone-title">
+          <h3 id="contact-phone-title" class="eyebrow">CALL THE CHURCH</h3>
+          <a class="contact-phone-link" href="tel:+256757885829"><span>MUWAYI FAIZAL</span><span class="contact-phone-number" data-content="contact_phone" data-contact-link="phone">0757885829</span><span aria-hidden="true">↗</span></a>
+          <a class="contact-phone-link" href="tel:+256701294172"><span>NALUNKUMA DORAH</span>0701294172 <span aria-hidden="true">↗</span></a>
+          <a class="contact-phone-link" href="tel:+256704868211"><span>REST CHURCH MINISTRIES</span>0704868211 <span aria-hidden="true">↗</span></a>
+        </section>
+        <a class="contact-land-card" href="donations.html#land-appeal">
+          <span class="eyebrow">SUPPORT THE LAND APPEAL</span>
+          <strong>We’re buying<br>church land.</strong>
+          <span class="contact-land-link">See the giving details <span aria-hidden="true">↗</span></span>
+        </a>
+      </div>
+      <form class="contact-form" id="contact-form" method="post">
+        <label for="contact-name">Your name</label>
+        <input id="contact-name" name="name" autocomplete="name" maxlength="100" required>
+        <label for="contact-email">Email address</label>
+        <input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required>
+        <label for="contact-subject">Subject <span class="optional">(optional)</span></label>
+        <input id="contact-subject" name="subject" maxlength="160">
+        <label for="contact-message">Your message</label>
+        <textarea id="contact-message" name="message" rows="5" maxlength="4000" required></textarea>
+        <button class="button button-dark" type="submit">Send message <span aria-hidden="true">↗</span></button>
+        <p class="form-status" id="contact-status" role="status" aria-live="polite"></p>
+        <p class="admin-help">Your message is securely saved for church follow-up and, once email delivery is configured, sent to the church inbox. Please do not include sensitive payment information.</p>
+      </form>
+    </section>
+  </main>
+  <div data-site-footer></div>
+</body>
+</html>
