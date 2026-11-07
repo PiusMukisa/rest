@@ -76,7 +76,7 @@ The public form calls `supabase/functions/send-contact-message/index.ts`. The fu
    supabase functions deploy send-contact-message
    ```
 
-Until the function, verified sender, and secrets are set up, the Contact form will explicitly say when the message was saved but could not be emailed. Visitors can still use the visible email and telephone links.
+When the Supabase project isn't configured or the email function cannot send, the Contact form opens a pre-addressed email to the church with the visitor's message prepared. The visitor must press Send in their email app; opening a draft does not itself send an email. Visitors can also email or call the church directly using the visible links.
 
 The bank account and SWIFT code are transcribed from the church’s poster. Confirm the recipient/account with church leadership before making a transfer. The donation details are displayed directly on the donations page so no old database value can silently replace the printed account. If the church updates its details, update `donations.html`, the poster asset, and the Supabase website-content seed together. Existing Supabase projects can update the visible contact email and primary telephone number in the website-content editor.
 
