@@ -86,6 +86,12 @@
   function applyContent(rows) {
     const values = new Map(rows.map((row) => [row.key, row.value]));
     applyLogo(values.get("logo_path"));
+    document.querySelectorAll("img[data-site-image]").forEach((image) => {
+      const path = values.get(image.dataset.siteImage);
+      if (typeof path === "string" && path.trim()) {
+        applyImage(image, path);
+      }
+    });
     document.querySelectorAll("[data-content]").forEach((element) => {
       const value = values.get(element.dataset.content);
       if (typeof value === "string" && value.trim()) {
@@ -119,27 +125,36 @@
     });
   }
 
+  function applyImage(image, path) {
+    try {
+      const url = new URL(path.trim(), window.location.origin);
+      const config = window.REST_CHURCH_CONFIG;
+      const supabaseUrl = config && config.supabaseUrl ? new URL(config.supabaseUrl) : null;
+      const isLocalImage = url.origin === window.location.origin &&
+        url.pathname.startsWith("/assets/images/");
+      const isUploadedImage = supabaseUrl &&
+        url.origin === supabaseUrl.origin &&
+        url.pathname.startsWith("/storage/v1/object/public/site-images/");
+      if (
+        (url.protocol !== "https:" && url.origin !== window.location.origin) ||
+        (!isLocalImage && !isUploadedImage) ||
+        !/\.(svg|png|jpe?g|webp)$/i.test(url.pathname) ||
+        (/\.svg$/i.test(url.pathname) && !isLocalImage) ||
+        url.username ||
+        url.password ||
+        url.search ||
+        url.hash
+      ) {
+        throw new Error("The image must be in the local assets/images folder or the site's Supabase image bucket.");
+      }
+      image.src = url.href;
+    } catch (error) {
+      console.error(`Could not apply the configured image for ${image.dataset.siteImage}.`, error);
+    }
+  }
+
   function applyLogo(path) {
     if (typeof path !== "string" || !path.trim()) return;
-
-    let logoUrl;
-    try {
-      logoUrl = new URL(path.trim(), window.location.origin);
-    } catch (error) {
-      console.error("The configured church logo path is invalid.", error);
-      return;
-    }
-
-    if (
-      logoUrl.origin !== window.location.origin ||
-      !logoUrl.pathname.startsWith("/assets/images/") ||
-      !/\.(svg|png|jpe?g|webp)$/i.test(logoUrl.pathname) ||
-      logoUrl.search ||
-      logoUrl.hash
-    ) {
-      console.error("The church logo must be an image in the local assets/images folder.");
-      return;
-    }
 
     document.querySelectorAll(".wordmark").forEach((wordmark) => {
       const image = wordmark.querySelector(".wordmark-logo");
@@ -149,7 +164,7 @@
         image.hidden = true;
         console.error("Could not load the configured Rest Church Ministries logo.");
       }, { once: true });
-      image.src = logoUrl.href;
+      applyImage(image, path);
     });
   }
 

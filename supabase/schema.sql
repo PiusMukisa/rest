@@ -250,9 +250,47 @@ grant select, update (status), delete on public.contact_messages to authenticate
 grant select, delete on public.donations to authenticated;
 grant insert (donor_name, amount, currency, reference, donated_on, notes) on public.donations to authenticated;
 
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('site-images', 'site-images', true, 5242880, array['image/jpeg', 'image/png', 'image/webp'])
+on conflict (id) do update
+set
+  public = excluded.public,
+  file_size_limit = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;
+
+drop policy if exists "Public can view site images" on storage.objects;
+create policy "Public can view site images"
+  on storage.objects for select
+  to anon, authenticated
+  using (bucket_id = 'site-images');
+
+drop policy if exists "Admins can upload site images" on storage.objects;
+create policy "Admins can upload site images"
+  on storage.objects for insert
+  to authenticated
+  with check (bucket_id = 'site-images' and public.is_site_admin());
+
+drop policy if exists "Admins can update site images" on storage.objects;
+create policy "Admins can update site images"
+  on storage.objects for update
+  to authenticated
+  using (bucket_id = 'site-images' and public.is_site_admin())
+  with check (bucket_id = 'site-images' and public.is_site_admin());
+
 insert into public.site_content (key, value)
 values
   ('logo_path', ''),
+  ('home_pastor_image', ''),
+  ('home_mission_image', ''),
+  ('home_gallery_outreach_image', ''),
+  ('home_gallery_care_image', ''),
+  ('home_gallery_baptism_image', ''),
+  ('home_gallery_children_image', ''),
+  ('about_evangelism_image', ''),
+  ('about_outreach_image', ''),
+  ('about_fellowship_image', ''),
+  ('about_faith_image', ''),
+  ('about_pastor_image', ''),
   ('pastor_video_url', 'https://www.tiktok.com/@muwayifaizal/video/7704317331232607495?is_from_webapp=1&sender_device=pc'),
   ('home_intro', ''),
   ('about_intro', ''),

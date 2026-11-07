@@ -4,8 +4,21 @@
   const loginForm = document.getElementById("login-form");
   const loginStatus = document.getElementById("login-status");
   const dashboardStatus = document.getElementById("dashboard-status");
+  const imageFields = [
+    ["logo_path", "Church logo"],
+    ["home_pastor_image", "Home page pastor photo"],
+    ["home_mission_image", "Home page mission photo"],
+    ["home_gallery_outreach_image", "Home page outreach photo"],
+    ["home_gallery_care_image", "Home page community care photo"],
+    ["home_gallery_baptism_image", "Home page baptism photo"],
+    ["home_gallery_children_image", "Home page children’s ministry photo"],
+    ["about_evangelism_image", "About page evangelism photo"],
+    ["about_outreach_image", "About page outreach photo"],
+    ["about_fellowship_image", "About page fellowship photo"],
+    ["about_faith_image", "About page faith photo"],
+    ["about_pastor_image", "About page pastor photo"]
+  ];
   const contentFields = [
-    ["logo_path", "Church logo path (existing image in assets/images/)"],
     ["pastor_video_url", "Pastor video URL (secure MP4, YouTube, Vimeo or TikTok)"],
     ["home_intro", "Home page introduction"],
     ["about_intro", "About us / our story"],
@@ -43,17 +56,117 @@
     }
   }
 
-  function isValidLogoPath(path) {
+  function isValidImagePath(path) {
     try {
       const url = new URL(path, window.location.origin);
-      return url.origin === window.location.origin &&
-        url.pathname.startsWith("/assets/images/") &&
+      const config = window.REST_CHURCH_CONFIG;
+      const supabaseUrl = config && config.supabaseUrl ? new URL(config.supabaseUrl) : null;
+      const isLocalImage = url.origin === window.location.origin &&
+        url.pathname.startsWith("/assets/images/");
+      const isUploadedImage = supabaseUrl &&
+        url.origin === supabaseUrl.origin &&
+        url.pathname.startsWith("/storage/v1/object/public/site-images/");
+      return (url.protocol === "https:" || url.origin === window.location.origin) &&
+        (isLocalImage || isUploadedImage) &&
         /\.(svg|png|jpe?g|webp)$/i.test(url.pathname) &&
+        (!/\.svg$/i.test(url.pathname) || isLocalImage) &&
+        !url.username &&
+        !url.password &&
         !url.search &&
         !url.hash;
     } catch {
       return false;
     }
+  }
+
+  function renderImageField(form, values, key, label) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "content-field content-image-field";
+
+    const fieldLabel = document.createElement("label");
+    const id = `content-${key}`;
+    fieldLabel.htmlFor = id;
+    fieldLabel.textContent = label;
+
+    const preview = document.createElement("img");
+    preview.className = "content-image-preview";
+    preview.alt = `${label} preview`;
+    preview.hidden = true;
+
+    const urlField = document.createElement("input");
+    urlField.id = id;
+    urlField.name = key;
+    urlField.type = "text";
+    urlField.readOnly = true;
+    urlField.value = values.get(key) || "";
+    urlField.placeholder = "Using the current website image";
+    urlField.setAttribute("aria-label", `${label} image URL`);
+
+    const fileField = document.createElement("input");
+    fileField.type = "file";
+    fileField.accept = "image/png,image/jpeg,image/webp";
+    fileField.hidden = true;
+
+    const uploadButton = document.createElement("button");
+    uploadButton.className = "button button-outline";
+    uploadButton.type = "button";
+    uploadButton.textContent = "Choose and upload image";
+    uploadButton.addEventListener("click", () => fileField.click());
+
+    function updatePreview(source) {
+      preview.hidden = !source;
+      if (source) preview.src = source;
+      else preview.removeAttribute("src");
+    }
+
+    if (urlField.value && isValidImagePath(urlField.value)) {
+      updatePreview(urlField.value);
+    }
+
+    fileField.addEventListener("change", async function () {
+      const file = fileField.files && fileField.files[0];
+      fileField.value = "";
+      if (!file) return;
+
+      const extensions = {
+        "image/jpeg": "jpg",
+        "image/png": "png",
+        "image/webp": "webp"
+      };
+      const extension = extensions[file.type];
+      if (!extension || file.size > 5 * 1024 * 1024) {
+        showStatus(dashboardStatus, "Choose a JPG, PNG, or WebP image no larger than 5 MB.", true);
+        return;
+      }
+
+      uploadButton.disabled = true;
+      showStatus(dashboardStatus, `Uploading ${label.toLowerCase()}...`, false);
+      try {
+        const objectPath = `${crypto.randomUUID()}.${extension}`;
+        const { error } = await client.storage.from("site-images").upload(objectPath, file, {
+          cacheControl: "3600",
+          contentType: file.type,
+          upsert: false
+        });
+        if (error) throw new Error(error.message);
+
+        const { data } = client.storage.from("site-images").getPublicUrl(objectPath);
+        if (!isValidImagePath(data.publicUrl)) {
+          throw new Error("The uploaded image URL does not match the configured Supabase project.");
+        }
+        urlField.value = data.publicUrl;
+        updatePreview(data.publicUrl);
+        showStatus(dashboardStatus, `${label} uploaded. Save website content to publish it.`, false);
+      } catch (error) {
+        showStatus(dashboardStatus, `Could not upload ${label.toLowerCase()}: ${error.message}`, true);
+        console.error(`Could not upload ${label.toLowerCase()}.`, error);
+      } finally {
+        uploadButton.disabled = false;
+      }
+    });
+
+    wrapper.append(fieldLabel, preview, urlField, fileField, uploadButton);
+    form.appendChild(wrapper);
   }
 
   function isValidPastorVideoUrl(value) {
@@ -199,6 +312,7 @@
     const byKey = new Map((data || []).map((item) => [item.key, item.value]));
     const form = document.getElementById("content-form");
     form.replaceChildren();
+    imageFields.forEach(([key, label]) => renderImageField(form, byKey, key, label));
     contentFields.forEach(([key, label]) => {
       const wrapper = document.createElement("div");
       wrapper.className = "content-field";
@@ -209,7 +323,7 @@
       const textarea = document.createElement("textarea");
       textarea.id = id;
       textarea.name = key;
-      textarea.maxLength = key === "logo_path" ? 300 : key === "account_number" ? 34 : 4000;
+      textarea.maxLength = key === "account_number" ? 34 : 4000;
       textarea.value = byKey.get(key) || "";
       wrapper.append(fieldLabel, textarea);
       form.appendChild(wrapper);
@@ -271,12 +385,16 @@
   function initContentEditor() {
     document.getElementById("save-content").addEventListener("click", async function () {
       const button = this;
-      const fields = Array.from(document.querySelectorAll("#content-form textarea"));
+      const fields = Array.from(document.querySelectorAll("#content-form [name]"));
       const rows = fields.map((field) => ({ key: field.name, value: field.value.trim() }));
-      const logoPath = rows.find((row) => row.key === "logo_path").value;
       const videoUrl = rows.find((row) => row.key === "pastor_video_url").value;
-      if (logoPath && !isValidLogoPath(logoPath)) {
-        showStatus(dashboardStatus, "Use a logo image path under /assets/images/ (SVG, PNG, JPG, or WebP).", true);
+      const invalidImage = rows.find((row) =>
+        imageFields.some(([key]) => key === row.key) &&
+        row.value &&
+        !isValidImagePath(row.value)
+      );
+      if (invalidImage) {
+        showStatus(dashboardStatus, "Choose an uploaded image or use an image under /assets/images/.", true);
         return;
       }
       if (videoUrl && !isValidPastorVideoUrl(videoUrl)) {

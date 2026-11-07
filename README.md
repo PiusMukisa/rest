@@ -7,6 +7,7 @@ A responsive, multi-page church website with a Supabase database, a protected ad
 - Home, About Us, Contact Us, Donations, and Admin pages.
 - A Projects page with church-provided presentation downloads and in-page PDF previews.
 - Supabase-backed editable website copy and contact details.
+- Admin image uploads for the church logo and selected Home/About page photos, stored in a public Supabase Storage bucket with admin-only upload access.
 - A public contact form; messages are private to approved administrators.
 - A database-side limit of five contact submissions per email address per hour, plus a hashed-IP limit on contact email delivery.
 - Admin sign-in, verified-contribution records, currency-separated contribution totals, recent transactions, message status management, and a website-content editor.
@@ -15,7 +16,7 @@ A responsive, multi-page church website with a Supabase database, a protected ad
 
 ## Supabase setup
 
-1. Create a Supabase project and run `supabase/schema.sql` in its SQL Editor.
+1. Create a Supabase project and run `supabase/schema.sql` in its SQL Editor. If you already applied an earlier version, run the current schema again to add the image bucket and policies; the script is safe to re-run.
 2. In Authentication, create an administrator user. Do not enable public sign-up for the website.
 3. Add that user's UUID to the administrator allowlist in the SQL Editor:
 
@@ -37,6 +38,7 @@ A responsive, multi-page church website with a Supabase database, a protected ad
 
 5. In Supabase Authentication URL settings, set the deployed website as the Site URL. Add redirect URLs only if you later enable an authentication flow that uses redirects.
 6. Serve the project from a web server (not `file://`) and use HTTPS. Netlify reads the supplied `_headers`; configure equivalent headers, including the Content Security Policy, if using another host. If using a custom Supabase hostname, update `connect-src` in that policy.
+7. In the admin dashboard’s website-content section, choose an image to upload it, then select **Save website content** to apply it. Uploads accept JPG, PNG, or WebP files up to 5 MB. Uploaded images are public because they appear on the public website; only approved admins can upload or update them.
 
 If you already applied an earlier version of the database schema, run this once to add the new optional pastor-video content field:
 
