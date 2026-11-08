@@ -21,7 +21,6 @@
       <header class="site-header">
         <a class="wordmark" href="index.html" aria-label="Rest Church Ministries home">
           <img class="wordmark-logo" src="assets/images/rest-church-mark.png" alt="">
-          <span class="wordmark-name">REST CHURCH<br>MINISTRIES</span>
         </a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">MENU</button>
         <nav class="site-nav" id="primary-navigation" aria-label="Main navigation">
@@ -49,7 +48,6 @@
           <div class="footer-brand">
             <a class="wordmark" href="index.html" aria-label="Rest Church Ministries home">
               <img class="wordmark-logo" src="assets/images/rest-church-mark.png" alt="">
-              <span class="wordmark-name">REST CHURCH<br>MINISTRIES</span>
             </a>
             <p>A channel of elevating leaders to function holistically, equipping them to integrate discipleship and mission.</p>
             <a class="footer-vision-link" href="about.html#vision">SEEK THE LOST · DISCIPLE THE FOUND <span aria-hidden="true">↗</span></a>
