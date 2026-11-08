@@ -1295,3 +1295,81 @@ td { border-top-color: #302b29; color: #efebe8; }
   .payment-detail { font-size: 13px; }
   .mobile-money-contact > a { font-size: 13px; }
 }
+
+.service-times {
+  padding-top: 68px;
+  padding-bottom: 76px;
+  color: #f3efec;
+  background: linear-gradient(145deg, #12100f, #0c0c0c 72%);
+}
+.service-times-heading {
+  margin-bottom: 25px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 30px;
+}
+.service-times-heading .eyebrow { margin-bottom: 11px; color: var(--accent-soft); }
+.service-times-heading h2 { margin: 0; font-size: clamp(38px, 4.5vw, 56px); }
+.service-times-heading > p { max-width: 290px; margin: 0 0 5px; color: #aaa6a2; font-size: 11px; line-height: 1.8; }
+.service-times-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+.service-time-card {
+  min-width: 0;
+  padding: 21px 23px;
+  border: 1px solid #302b29;
+  background: linear-gradient(125deg, rgba(240,75,50,.07), transparent 58%), #0d0d0d;
+}
+.service-time-day { color: var(--accent-soft); font-size: 8px; font-weight: 700; letter-spacing: .14em; }
+.service-time-card h3 { margin: 10px 0 9px; color: #f4f0ed; font: 600 24px/1.1 var(--serif); letter-spacing: .025em; text-transform: uppercase; }
+.service-time { margin: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 9px; color: #c5bfba; font-size: 17px; font-weight: 600; letter-spacing: .035em; }
+.service-time > span { color: var(--accent-soft); font-size: 14px; }
+.connect-social-links { margin-top: 22px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.connect-social-link {
+  min-width: 0;
+  min-height: 59px;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid #302b29;
+  background: #0c0c0c;
+  transition: border-color .2s, background .2s, transform .2s;
+}
+.connect-social-link:hover { transform: translateY(-2px); border-color: rgba(255,116,80,.55); background: #17110f; }
+.connect-social-icon {
+  width: 35px;
+  height: 35px;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #302b29;
+  border-radius: 50%;
+}
+.connect-social-icon svg, .footer-social-icon svg, .contact-social-icon svg { width: 17px; height: 17px; display: block; fill: currentColor; }
+.connect-social-icon-youtube, .footer-social-icon-youtube { color: #ff4545; }
+.connect-social-icon-whatsapp, .footer-social-icon-whatsapp, .contact-social-icon-whatsapp { color: #43d17d; }
+.connect-social-icon-call { color: var(--accent-soft); }
+.connect-social-copy { min-width: 0; margin-left: auto; display: grid; gap: 3px; text-align: right; }
+.connect-social-copy > span { color: #aaa39e; font-size: 7px; font-weight: 700; letter-spacing: .1em; }
+.connect-social-copy > strong { color: #f1edeb; font-size: 9px; font-weight: 600; }
+.connect-social-link:hover .connect-social-copy > strong { color: var(--accent-soft); }
+.footer-nav a { display: inline-flex; align-items: center; gap: 7px; }
+.footer-social-icon { width: 16px; height: 16px; display: inline-grid; flex: 0 0 auto; place-items: center; }
+.footer-social-icon svg { width: 14px; height: 14px; }
+.contact-social-name { display: inline-flex; align-items: center; gap: 6px; }
+.contact-social-icon { display: inline-grid; place-items: center; }
+.contact-social-icon svg { width: 15px; height: 15px; }
+
+@media (max-width: 650px) {
+  .service-times { padding-top: 55px; padding-bottom: 58px; }
+  .service-times-heading { align-items: flex-start; flex-direction: column; gap: 11px; }
+  .service-times-heading h2 { font-size: 42px; }
+  .service-times-grid { grid-template-columns: 1fr; gap: 9px; }
+  .service-time-card { padding: 18px; }
+  .service-time-card h3 { font-size: 22px; }
+  .service-time { font-size: 16px; }
+  .connect-social-links { grid-template-columns: 1fr; gap: 8px; }
+  .connect-social-link { min-height: 52px; }
+  .connect-social-copy > strong { font-size: 10px; }
+}
