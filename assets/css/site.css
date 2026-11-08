@@ -361,16 +361,16 @@ h1 em, h2 em { color: var(--accent-soft); font-weight: 700; font-style: normal; 
   filter: brightness(.76) saturate(.78);
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 29%, #000 82%, transparent 100%);
   mask-image: linear-gradient(90deg, transparent 0%, #000 29%, #000 82%, transparent 100%);
-  animation: hero-background-fade 18s ease-in-out infinite;
+  animation: hero-background-fade 24s ease-in-out infinite;
 }
 .hero-background img:nth-child(1) { animation-delay: 0s; }
-.hero-background img:nth-child(2) { animation-delay: -12s; }
-.hero-background img:nth-child(3) { animation-delay: -6s; }
+.hero-background img:nth-child(2) { animation-delay: -18s; }
+.hero-background img:nth-child(3) { animation-delay: -12s; }
+.hero-background img:nth-child(4) { animation-delay: -6s; }
 @keyframes hero-background-fade {
-  0% { opacity: .78; }
-  28% { opacity: .78; }
-  34%, 94% { opacity: 0; }
-  100% { opacity: .78; }
+  0%, 20% { opacity: .88; }
+  25%, 94% { opacity: 0; }
+  100% { opacity: .88; }
 }
 .hero-copy { width: 61%; padding: 24px 0 104px; }
 .hero-copy > .eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; color: var(--accent-soft); }
@@ -398,10 +398,9 @@ h1 em, h2 em { color: var(--accent-soft); font-weight: 700; font-style: normal; 
   to { clip-path: inset(0 0 0 0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-title-line, .hero-background img { animation: none; }
+  .hero-title-line { animation: none; }
   .hero-title-line { clip-path: none; }
-  .hero-background img { opacity: 0; }
-  .hero-background img:first-child { opacity: 1; }
+  .hero-background img { animation-duration: 24s !important; animation-iteration-count: infinite !important; }
 }
 .hero h1 em {
   color: transparent;
@@ -642,7 +641,14 @@ td { border-top-color: #302b29; color: #efebe8; }
     background: transparent;
   }
   .hero-background { height: 990px; }
-  .hero-background img { top: 0; width: 100%; height: 100%; object-position: center 38%; }
+  .hero-background img {
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-position: center 38%;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  }
   .hero-background::after {
     background:
       linear-gradient(0deg, #090909 0%, rgba(9,9,9,.12) 48%, #090909 100%),
