@@ -9,11 +9,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/site.css?v=20261108-slideshow-2">
+  <link rel="stylesheet" href="assets/css/site.css?v=20261108-admin-upload-3">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0"></script>
   <script defer src="assets/js/config.js"></script>
   <script defer src="assets/js/client.js"></script>
-  <script defer src="assets/js/admin.js"></script>
+  <script defer src="assets/js/admin.js?v=20261108-admin-upload-3"></script>
 </head>
 <body class="admin-page">
   <header class="admin-header"><a class="wordmark" href="index.html" aria-label="Rest Church Ministries home"><img class="wordmark-logo" src="assets/images/rest-church-mark.png" alt=""></a><a class="text-link" href="index.html">View website <span aria-hidden="true">↗</span></a></header>
@@ -65,9 +65,16 @@
       <section class="admin-section panel">
         <div class="admin-section-heading"><div><p class="eyebrow">SITE INFORMATION</p><h2>Manage <em>website content.</em></h2></div></div>
         <p class="admin-help">Enter only details confirmed by church leadership. Contact and ABSA banking information entered here is shown publicly on the relevant page.</p>
-        <p class="admin-help">For a photo or logo, choose a JPG, PNG, or WebP image up to 5 MB. Upload it, then select “Save website content” to publish the change. The image storage policies must first be enabled by applying the updated Supabase schema.</p>
+        <p class="admin-help">Choose a JPG, PNG, or WebP photo up to 5 MB from your computer. It uploads to the church website and publishes automatically. To use a web image instead, paste its local /assets/images/ path or public site-images URL and save. Choose “Use website default” to remove a saved override. Uploading requires the site-images bucket and admin policies in Supabase.</p>
+        <p class="form-status content-save-status" id="image-upload-status" role="status" aria-live="polite"></p>
+        <div class="content-save-actions">
+          <button class="button button-dark" type="button" data-content-save>Save website content <span aria-hidden="true">↗</span></button>
+        </div>
+        <p class="form-status content-save-status" id="content-save-status" role="status" aria-live="polite"></p>
         <form id="content-form" class="content-editor"></form>
-        <button class="button button-dark" id="save-content" type="button">Save website content <span aria-hidden="true">↗</span></button>
+        <div class="content-save-actions">
+          <button class="button button-dark" type="button" data-content-save>Save website content <span aria-hidden="true">↗</span></button>
+        </div>
       </section>
     </section>
   </main>

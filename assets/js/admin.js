@@ -4,6 +4,7 @@
   const loginForm = document.getElementById("login-form");
   const loginStatus = document.getElementById("login-status");
   const dashboardStatus = document.getElementById("dashboard-status");
+  const imageUploadStatus = document.getElementById("image-upload-status");
   const imageFields = [
     ["logo_path", "Church logo"],
     ["home_pastor_image", "Home page pastor photo"],
@@ -97,9 +98,8 @@
     urlField.id = id;
     urlField.name = key;
     urlField.type = "text";
-    urlField.readOnly = true;
     urlField.value = values.get(key) || "";
-    urlField.placeholder = "Using the current website image";
+    urlField.placeholder = "Paste /assets/images/photo.jpg or a public site-images URL";
     urlField.setAttribute("aria-label", `${label} image URL`);
 
     const fileField = document.createElement("input");
@@ -113,11 +113,35 @@
     uploadButton.textContent = "Choose and upload image";
     uploadButton.addEventListener("click", () => fileField.click());
 
+    const resetButton = document.createElement("button");
+    resetButton.className = "content-image-reset";
+    resetButton.type = "button";
+    resetButton.textContent = "Use website default";
+    resetButton.addEventListener("click", function () {
+      urlField.value = "";
+      updatePreview("");
+      showStatus(document.getElementById("content-save-status"), `${label} will use the website’s default image after you save.`, false);
+    });
+
     function updatePreview(source) {
       preview.hidden = !source;
       if (source) preview.src = source;
       else preview.removeAttribute("src");
     }
+
+    urlField.addEventListener("input", function () {
+      if (!urlField.value.trim()) {
+        updatePreview("");
+      } else if (isValidImagePath(urlField.value)) {
+        updatePreview(urlField.value);
+      } else {
+        updatePreview("");
+      }
+    });
+    preview.addEventListener("error", function () {
+      preview.hidden = true;
+      showStatus(imageUploadStatus, `Could not load the ${label.toLowerCase()} preview. Check the image URL and access permissions.`, true);
+    });
 
     if (urlField.value && isValidImagePath(urlField.value)) {
       updatePreview(urlField.value);
@@ -135,12 +159,12 @@
       };
       const extension = extensions[file.type];
       if (!extension || file.size > 5 * 1024 * 1024) {
-        showStatus(dashboardStatus, "Choose a JPG, PNG, or WebP image no larger than 5 MB.", true);
+        showStatus(imageUploadStatus, "Choose a JPG, PNG, or WebP image no larger than 5 MB.", true);
         return;
       }
 
       uploadButton.disabled = true;
-      showStatus(dashboardStatus, `Uploading ${label.toLowerCase()}...`, false);
+      showStatus(imageUploadStatus, `Uploading ${label.toLowerCase()}...`, false);
       try {
         const objectPath = `${crypto.randomUUID()}.${extension}`;
         const { error } = await client.storage.from("site-images").upload(objectPath, file, {
@@ -156,16 +180,27 @@
         }
         urlField.value = data.publicUrl;
         updatePreview(data.publicUrl);
-        showStatus(dashboardStatus, `${label} uploaded. Save website content to publish it.`, false);
+        showStatus(imageUploadStatus, `Publishing ${label.toLowerCase()}...`, false);
+        const { error: saveError } = await client
+          .from("site_content")
+          .upsert({ key, value: data.publicUrl }, { onConflict: "key" });
+        if (saveError) {
+          throw new Error(`The photo uploaded, but could not be published: ${saveError.message}. Use Save website content to retry.`);
+        }
+        showStatus(imageUploadStatus, `${label} uploaded and published. Refresh the website to see it.`, false);
       } catch (error) {
-        showStatus(dashboardStatus, `Could not upload ${label.toLowerCase()}: ${error.message}`, true);
+        const details = error instanceof Error ? error.message : String(error);
+        const storageSetupHint = /bucket|row.level security|permission|not authorized|unauthorized/i.test(details)
+          ? " Check that the site-images bucket and admin upload policies from supabase/schema.sql are enabled in Supabase."
+          : "";
+        showStatus(imageUploadStatus, `Could not upload ${label.toLowerCase()}: ${details}${storageSetupHint}`, true);
         console.error(`Could not upload ${label.toLowerCase()}.`, error);
       } finally {
         uploadButton.disabled = false;
       }
     });
 
-    wrapper.append(fieldLabel, preview, urlField, fileField, uploadButton);
+    wrapper.append(fieldLabel, preview, urlField, fileField, uploadButton, resetButton);
     form.appendChild(wrapper);
   }
 
@@ -383,10 +418,11 @@
   }
 
   function initContentEditor() {
-    document.getElementById("save-content").addEventListener("click", async function () {
-      const button = this;
+    const buttons = Array.from(document.querySelectorAll("[data-content-save]"));
+    buttons.forEach((button) => button.addEventListener("click", async function () {
       const fields = Array.from(document.querySelectorAll("#content-form [name]"));
       const rows = fields.map((field) => ({ key: field.name, value: field.value.trim() }));
+      const status = document.getElementById("content-save-status");
       const videoUrl = rows.find((row) => row.key === "pastor_video_url").value;
       const invalidImage = rows.find((row) =>
         imageFields.some(([key]) => key === row.key) &&
@@ -394,26 +430,27 @@
         !isValidImagePath(row.value)
       );
       if (invalidImage) {
-        showStatus(dashboardStatus, "Choose an uploaded image or use an image under /assets/images/.", true);
+        showStatus(status, "Choose an uploaded image or use an image under /assets/images/.", true);
         return;
       }
       if (videoUrl && !isValidPastorVideoUrl(videoUrl)) {
-        showStatus(dashboardStatus, "Use a secure direct video link (MP4, WebM, or Ogg), or a YouTube, Vimeo, or TikTok video URL.", true);
+        showStatus(status, "Use a secure direct video link (MP4, WebM, or Ogg), or a YouTube, Vimeo, or TikTok video URL.", true);
         return;
       }
-      button.disabled = true;
-      showStatus(dashboardStatus, "Saving website content...", false);
+      buttons.forEach((saveButton) => { saveButton.disabled = true; });
+      showStatus(status, "Saving website content...", false);
       try {
         const { error } = await client.from("site_content").upsert(rows, { onConflict: "key" });
         if (error) throw new Error(error.message);
-        showStatus(dashboardStatus, "Website content saved.", false);
+        showStatus(status, "Website content saved. Refresh the website to see the published changes.", false);
       } catch (error) {
-        showStatus(dashboardStatus, `Could not save website content: ${error.message}`, true);
+        const details = error instanceof Error ? error.message : String(error);
+        showStatus(status, `Could not save website content: ${details}`, true);
         console.error("Could not save website content.", error);
       } finally {
-        button.disabled = false;
+        buttons.forEach((saveButton) => { saveButton.disabled = false; });
       }
-    });
+    }));
   }
 
   function initDonationForm() {

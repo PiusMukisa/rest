@@ -205,6 +205,8 @@ td { padding: 13px 8px; border-top: 1px solid var(--line); font-size: 11px; }
 .content-image-field input[type="text"] { width: 100%; padding: 10px; border: 1px solid var(--line); color: var(--ink); background: transparent; font-size: 11px; }
 .content-image-preview { width: min(100%, 240px); height: 140px; object-fit: cover; border: 1px solid var(--line); background: var(--paper); }
 .content-image-field .button { min-height: 38px; padding: 9px 13px; font-size: 10px; }
+.content-image-reset { padding: 2px 0; border: 0; color: #bdb7b2; background: transparent; font-size: 10px; text-align: left; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.content-image-reset:hover { color: var(--accent-soft); }
 
 @keyframes image-arrive { from { scale: 1.05; opacity: .7; } to { scale: 1; opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
@@ -1303,10 +1305,15 @@ td { border-top-color: #302b29; color: #efebe8; }
 }
 
 .service-times {
+  position: relative;
+  overflow: hidden;
   padding-top: 68px;
-  padding-bottom: 76px;
+  padding-bottom: 34px;
   color: #f3efec;
-  background: linear-gradient(145deg, #12100f, #0c0c0c 72%);
+  background:
+    radial-gradient(ellipse at 5% 0%, rgba(240,75,50,.09), transparent 42%),
+    radial-gradient(ellipse at 100% 100%, rgba(182,139,83,.09), transparent 40%),
+    linear-gradient(145deg, #14110f, #0c0c0c 72%);
 }
 .service-times-heading {
   margin-bottom: 25px;
@@ -1318,17 +1325,41 @@ td { border-top-color: #302b29; color: #efebe8; }
 .service-times-heading .eyebrow { margin-bottom: 11px; color: var(--accent-soft); }
 .service-times-heading h2 { margin: 0; font-size: clamp(38px, 4.5vw, 56px); }
 .service-times-heading > p { max-width: 290px; margin: 0 0 5px; color: #aaa6a2; font-size: 11px; line-height: 1.8; }
-.service-times-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+.service-times-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .service-time-card {
+  position: relative;
   min-width: 0;
-  padding: 21px 23px;
-  border: 1px solid #302b29;
-  background: linear-gradient(125deg, rgba(240,75,50,.07), transparent 58%), #0d0d0d;
+  min-height: 202px;
+  padding: 22px 24px 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(240,75,50,.15), transparent 48%),
+    linear-gradient(135deg, #1a1513, #100e0d 68%);
+  box-shadow: 0 15px 40px rgba(0,0,0,.2);
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
 }
-.service-time-day { color: var(--accent-soft); font-size: 8px; font-weight: 700; letter-spacing: .14em; }
-.service-time-card h3 { margin: 10px 0 9px; color: #f4f0ed; font: 600 24px/1.1 var(--serif); letter-spacing: .025em; text-transform: uppercase; }
-.service-time { margin: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 9px; color: #c5bfba; font-size: 17px; font-weight: 600; letter-spacing: .035em; }
-.service-time > span { color: var(--accent-soft); font-size: 14px; }
+.service-time-card-thursday {
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(95,150,119,.15), transparent 48%),
+    linear-gradient(135deg, #141916, #0e100f 68%);
+}
+.service-time-card:hover { transform: translateY(-4px); border-color: rgba(255,116,80,.48); box-shadow: 0 20px 46px rgba(0,0,0,.3); }
+.service-time-card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.service-time-day { padding: 6px 9px; border: 1px solid rgba(255,116,80,.25); border-radius: 999px; color: #ff9a7e; background: rgba(240,75,50,.08); font-size: 7px; font-weight: 700; letter-spacing: .14em; }
+.service-time-card-thursday .service-time-day { border-color: rgba(134,192,154,.25); color: #9ac9a9; background: rgba(95,150,119,.1); }
+.service-time-icon { width: 35px; height: 35px; display: grid; flex: 0 0 auto; place-items: center; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; color: #ff9475; background: rgba(255,255,255,.035); }
+.service-time-card-thursday .service-time-icon { color: #9ac9a9; }
+.service-time-icon svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.6; }
+.service-time-card h3 { margin: 19px 0 11px; color: #f7f1ed; font: 600 clamp(23px, 2.5vw, 30px)/1.08 var(--serif); letter-spacing: .015em; }
+.service-time { margin: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 9px; color: #f3e5dc; font-size: clamp(16px, 1.8vw, 20px); font-weight: 700; letter-spacing: .025em; }
+.service-time > svg { width: 17px; height: 17px; margin-right: 1px; fill: none; stroke: var(--accent-soft); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.service-time-card-thursday .service-time > svg { stroke: #9ac9a9; }
+.service-time > span { color: #96877f; font-size: 13px; }
+.service-time-note { margin: 13px 0 0; color: #a7a09a; font-size: 9px; letter-spacing: .035em; }
+.service-times-welcome { margin: 24px 0 0; display: flex; align-items: center; justify-content: center; gap: 9px; color: #aaa39e; font-size: 9px; letter-spacing: .06em; text-align: center; }
+.service-times-welcome span { color: var(--accent-soft); font-size: 11px; }
 .connect-social-links { margin-top: 22px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .connect-social-link {
   min-width: 0;
@@ -1372,10 +1403,16 @@ td { border-top-color: #302b29; color: #efebe8; }
   .service-times-heading { align-items: flex-start; flex-direction: column; gap: 11px; }
   .service-times-heading h2 { font-size: 42px; }
   .service-times-grid { grid-template-columns: 1fr; gap: 9px; }
-  .service-time-card { padding: 18px; }
-  .service-time-card h3 { font-size: 22px; }
-  .service-time { font-size: 16px; }
+  .service-time-card { min-height: 0; padding: 18px; border-radius: 10px; }
+  .service-time-card h3 { margin-top: 15px; font-size: 24px; }
+  .service-time { font-size: 17px; }
+  .service-times-welcome { gap: 6px; font-size: 8px; }
   .connect-social-links { grid-template-columns: 1fr; gap: 8px; }
   .connect-social-link { min-height: 52px; }
   .connect-social-copy > strong { font-size: 10px; }
 }
+
+.content-save-actions { margin: 12px 0; display: flex; align-items: center; gap: 12px; }
+.content-save-status { min-height: 21px; margin: 4px 0 9px; }
+.content-image-field > .content-image-reset { color: #c5bfba; }
+.content-image-field > .content-image-reset:hover { color: var(--accent-soft); }

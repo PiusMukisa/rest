@@ -38,7 +38,7 @@ A responsive, multi-page church website with a Supabase database, a protected ad
 
 5. In Supabase Authentication URL settings, set the deployed website as the Site URL. Add redirect URLs only if you later enable an authentication flow that uses redirects.
 6. Serve the project from a web server (not `file://`) and use HTTPS. Netlify reads the supplied `_headers`; configure equivalent headers, including the Content Security Policy, if using another host. If using a custom Supabase hostname, update `connect-src` in that policy.
-7. In the admin dashboard’s website-content section, choose an image to upload it, then select **Save website content** to apply it. Uploads accept JPG, PNG, or WebP files up to 5 MB. Uploaded images are public because they appear on the public website; only approved admins can upload or update them.
+7. In the admin dashboard’s website-content section, choose a photo from your computer to upload and publish it immediately. Uploads accept JPG, PNG, or WebP files up to 5 MB. Use **Save website content** for text and pasted image URLs. Uploaded images are public because they appear on the public website; only approved admins can upload or update them.
 
 If you already applied an earlier version of the database schema, run this once to add the new optional pastor-video content field:
 
